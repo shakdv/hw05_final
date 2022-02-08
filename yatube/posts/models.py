@@ -81,7 +81,7 @@ class Comment(models.Model):
     )
     text = models.TextField(
         max_length=5000,
-        verbose_name='Коментарий'
+        verbose_name='Комментарий'
     )
     created = models.DateTimeField(
         auto_now_add=True,
@@ -98,8 +98,8 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-created']
-        verbose_name_plural = 'Коментарии'
-        verbose_name = 'Коментарий'
+        verbose_name_plural = 'Комментарии'
+        verbose_name = 'Комментарий'
 
     def __str__(self):
         return self.text[:15]
@@ -120,6 +120,12 @@ class Follow(models.Model):
     class Meta:
         verbose_name_plural = 'Подписки'
         verbose_name = 'Подписка'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'],
+                name='following_unique'
+            ),
+        ]
 
     def __str__(self):
         return f'{self.user} подписался на {self.author}'

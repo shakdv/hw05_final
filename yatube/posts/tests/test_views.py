@@ -126,6 +126,25 @@ class PostPagesTests(TestCase):
         )
         self.post_context(response.context['post'])
 
+    def test_index_page_cache(self):
+        """Валидация кэша."""
+        post = Post.objects.create(
+            text='Какой-то текст, чтобы потестить кэш',
+            author=self.user)
+        content = self.authorized_client.get(
+            reverse('posts:index')
+        ).content
+        post.delete()
+        content_del = self.authorized_client.get(
+            reverse('posts:index')
+        ).content
+        self.assertEqual(content, content_del)
+        cache.clear()
+        content_cache_clear = self.authorized_client.get(
+            reverse('posts:index')
+        ).content
+        self.assertNotEqual(content, content_cache_clear)
+
 
 class PaginatorViewsTest(TestCase):
     @classmethod

@@ -76,7 +76,11 @@ class PostFormTests(TestCase):
         self.assertEqual(post.text, form_data['text'])
         self.assertEqual(post.author, self.user_author)
         self.assertEqual(post.group_id, form_data['group'])
-        self.assertEqual(post.image.name, 'posts/small.gif')
+        self.assertEqual(
+            post.image.name,
+            post._meta.get_field('image').upload_to
+            + form_data['image'].name
+        )
 
     def test_post_author_edit_post(self):
         """Проверка редактирования поста его автором."""
@@ -179,8 +183,8 @@ class PostFormTests(TestCase):
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
         redirect = (
-            reverse('users:login')
-            + '?next=' + reverse('posts:edit', args=[post.id])
+                reverse('users:login')
+                + '?next=' + reverse('posts:edit', args=[post.id])
         )
 
         self.assertRedirects(response, redirect)
