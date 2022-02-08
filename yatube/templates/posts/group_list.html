@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+  {{ title }}
+{% endblock %}
+{% block content %}
+  <div class="container py-5">
+    {% for post in page_obj %}
+      {% if forloop.first %}
+        <h1>{{ post.group.title }}</h1>
+        <p>{{ post.group.description }}</p>
+      {% endif %}
+    {% endfor %}
+    {% include 'includes/post.html' %}
+  </div>
+{% endblock %}
