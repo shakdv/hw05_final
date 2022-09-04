@@ -42,6 +42,10 @@ python -m pip install --upgrade pip
 ```bash
 pip install -r requirements.txt
 ```
+Перейти в каталол проекта:
+```bash
+cd yatube
+```
 
 Выполнить миграции:
 ```bash
